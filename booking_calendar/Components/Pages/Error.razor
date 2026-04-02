@@ -1,5 +1,6 @@
 ﻿@page "/Error"
 @using System.Diagnostics
+@using Microsoft.AspNetCore.Diagnostics
 
 <PageTitle>Error</PageTitle>
 
@@ -7,6 +8,24 @@
 <h2 class="text-danger">An error occurred while processing your request.</h2>
 
 @if (ShowRequestId)
+{
+    <p>
+        <strong>Request ID:</strong> <code>@RequestId</code>
+    </p>
+}
+
+@if (!string.IsNullOrEmpty(ErrorMessage))
+{
+    <div class="alert alert-danger">
+        <strong>Error:</strong> @ErrorMessage
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(RequestId))
+{
+    <p><strong>Request ID:</strong> @RequestId</p>
+}
+
 {
     <p>
         <strong>Request ID:</strong> <code>@RequestId</code>
@@ -29,8 +48,27 @@
     private HttpContext? HttpContext { get; set; }
 
     private string? RequestId { get; set; }
+    private string? ErrorMessage { get; set; }
     private bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
 
-    protected override void OnInitialized() =>
+    protected override void OnInitialized(){
         RequestId = Activity.Current?.Id ?? HttpContext?.TraceIdentifier;
+        
+        var httpContext = Context;
+
+        if (httpContext != null)
+        {
+            var exceptionFeature = httpContext.Features.Get<IExceptionHandlerPathFeature>();
+
+            if (exceptionFeature != null)
+            {
+                ErrorMessage = exceptionFeature.Error.Message;
+            }
+
+            RequestId = httpContext.TraceIdentifier;
+        }
+        }
+        [CascadingParameter]
+        public HttpContext? Context { get; set; }
+
 }
