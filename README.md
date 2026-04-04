@@ -11,36 +11,36 @@ A booking calendar application built with ASP.NET Core and Blazor.
 
 This application uses **MySQL** as its database. To protect sensitive credentials, we use **user-secrets** instead of committing passwords to source control.
 
-### Option 1: Use MySQL Database (Production/Remote)
+### First-Time Setup
 
-1. Navigate to the `booking_calendar` project directory:
+1. **Copy the example configuration files:**
    ```bash
    cd booking_calendar
+   copy appsettings.json.example appsettings.json
+   copy appsettings.Development.json.example appsettings.Development.json
    ```
 
-2. Set your MySQL connection string using user-secrets:
+2. **Initialize user-secrets:**
    ```bash
-   dotnet user-secrets set "ConnectionStrings:DefaultConnection" "Server=your-host;Database=your-db;User=your-user;Password=your-password;Port=3306;SslMode=Required;"
+   dotnet user-secrets init
    ```
 
-   **Example for Railway.app PostgreSQL (converted to MySQL format):**
+3. **Set your MySQL connection string using user-secrets:**
    ```bash
-   dotnet user-secrets set "ConnectionStrings:DefaultConnection" "Server=containers-us-west-143.railway.app;Database=booking_calendar;User=postgres;Password=YOUR_PASSWORD;Port=24959;SslMode=Required;"
+   dotnet user-secrets set "ConnectionStrings:DefaultConnection" "Server=cse325project-booking-calendar.d.aivencloud.com;Database=CSE325Project;User=avnadmin;Password=YOUR_PASSWORD;Port=24959;SslMode=Required;"
    ```
+   
+   **Important:** Replace `YOUR_PASSWORD` with the actual database password (ask your team lead for credentials).
 
-   > **Note:** Replace `YOUR_PASSWORD` with your actual database password.
-
-### Option 2: Use InMemory Database (Testing Only)
+### InMemory Database Fallback (Testing Only)
 
 If no connection string is configured, the app will automatically fall back to an in-memory database. This is useful for local testing, but **data will not persist** after the app restarts.
-
-To use this mode, simply run the app without setting a connection string.
 
 ### Verifying Your Configuration
 
 When you run the app, check the console output for these messages:
-- `[Database] Using MySQL connection` - MySQL is configured correctly
-- `[Database] WARNING: No connection string found...` - App is using InMemory fallback
+- `[Database] Using MySQL connection` - MySQL is configured correctly ✅
+- `[Database] WARNING: No connection string found...` - App is using InMemory fallback ⚠️
 
 **Important:** The app will NEVER print your password to the console.
 

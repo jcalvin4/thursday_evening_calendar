@@ -13,6 +13,6 @@ public class Event
     public DateTime Date { get; set; }
     [Column("description")]
     public string Description { get; set; } = string.Empty;
-    [Column("course_id")]
+    [Column("courses_id")]
     public int? Course_Id { get; set; }
 }
