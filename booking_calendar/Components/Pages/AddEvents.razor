@@ -15,7 +15,7 @@
 
     <div>
         <label> Course: </label>
-        <InputText @bind-Value="eventModel.Course" />
+        <InputNumber @bind-Value="eventModel.CourseId" />
     </div>
 
     <div>
@@ -41,7 +41,7 @@
     private string? message;
 
     private async Task HandleValidSubmit(){
-        var response = await Http.PutAsJsonAsync("api/events", eventModel);
+        var response = await Http.PostAsJsonAsync("api/events", eventModel);
         if (response.IsSuccessStatusCode)
         {
             message = "✅ Event added successfully!";

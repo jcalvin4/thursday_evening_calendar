@@ -73,9 +73,19 @@ public class EventController : ControllerBase // this is a simple controller tha
         return Ok(events);
     }
 
-    [HttpPut]
-    public async Task<IActionResult> AddEvent (Event evt)
+    // Use HttpPost for creating new resources (HttpPut is for updates)
+    [HttpPost]
+    public async Task<IActionResult> AddEvent([FromBody] EventModel model)
     {
+        // Map EventModel to Event entity
+        var evt = new Event
+        {
+            Name = model.Name,
+            Date = model.Date,
+            Description = model.Description,
+            CourseId = model.CourseId
+        };
+        
         _db.Events.Add(evt);
         await _db.SaveChangesAsync();
         return Ok(evt);
