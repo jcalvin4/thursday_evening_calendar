@@ -9,6 +9,7 @@
 ***********************************************************************************/
 using Microsoft.EntityFrameworkCore;
 using booking_calendar.Components;
+using Microsoft.AspNetCore.Components;
 
 /***********************************************************************************
  * The booking_calendar namespace contains all the classes and components related to
@@ -33,6 +34,12 @@ builder.Services.AddRazorComponents()
 ***********************************************************************************/
 builder.Services.AddControllers(); // add controllers to the service collection
 builder.Services.AddHttpClient(); // add HttpClient to the service collection, which allows us to make HTTP requests to our API controllers from our Razor components
+
+// Configure HttpClient with BaseAddress for Blazor Server components
+builder.Services.AddScoped(sp => new HttpClient
+{
+    BaseAddress = new Uri(sp.GetRequiredService<NavigationManager>().BaseUri)
+});
 
 /***********************************************************************************
  * Database Configuration - Safely connects to MySQL with InMemory fallback
