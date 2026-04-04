@@ -48,7 +48,8 @@ public class EventController : ControllerBase // this is a simple controller tha
             Name = model.Name,
             Date = model.Date,
             Description = model.Description ?? string.Empty,
-            Course_Id = model.Course_Id
+            // Convert 0 to null for Course_Id (when input is empty, it sends 0)
+            Course_Id = model.Course_Id == 0 ? null : model.Course_Id
         };
         
         _db.Events.Add(evt);
