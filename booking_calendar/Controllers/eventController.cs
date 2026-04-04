@@ -82,8 +82,8 @@ public class EventController : ControllerBase // this is a simple controller tha
         {
             Name = model.Name,
             Date = model.Date,
-            Description = model.Description,
-            CourseId = model.CourseId
+            Description = model.Description ?? string.Empty,
+            Course_Id = model.Course_Id
         };
         
         _db.Events.Add(evt);
